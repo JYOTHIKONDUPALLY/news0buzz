@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Homepage.module.css";
 import MainNewsSlider from "../../components/MainnewsSlider/MainnewsSlider";
 import FeaturedNewsSlider from "../../components/FeaturesNewsSlider/FeaturesNewsSlider";
 import NewsWithSidebar from "../../components/NewsItems/NewsWithSideBar";
@@ -30,7 +29,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className={styles.homePage}>
+    <div>
       {/* <BreakingNews /> */}
 
       {loading && (

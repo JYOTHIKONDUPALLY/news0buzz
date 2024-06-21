@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import axios from "axios";
+import { Box, Container, Typography, CircularProgress } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import leftarrow from "../../images/icons8-arrow-48.png";
@@ -84,16 +84,22 @@ const CustomRightArrow = ({ onClick }) => (
 
 const FeaturedNewsSlider = () => {
   const [featuredNews, setFeaturedNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const placeholderImages = [img1, img2, img3, img4];
 
   useEffect(() => {
     const fetchFeaturedNews = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://newsapi.org/v2/top-headlines?country=in&apiKey=${api_key}`
         );
         setFeaturedNews(response.data.articles.slice(0, 10)); // Limit to 10 articles
+        setLoading(false);
       } catch (error) {
+        setError("Error fetching news data.");
+        setLoading(false);
         console.error("Error fetching news data:", error);
       }
     };
@@ -128,7 +134,20 @@ const FeaturedNewsSlider = () => {
           Featured News
         </Typography>
       </Box>
-      <Box>
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="300px"
+        >
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Typography variant="body1" color="error" align="center" sx={{ mt: 2 }}>
+          {error}
+        </Typography>
+      ) : (
         <Carousel
           responsive={responsive}
           customLeftArrow={<CustomLeftArrow />}
@@ -171,7 +190,7 @@ const FeaturedNewsSlider = () => {
             </Box>
           ))}
         </Carousel>
-      </Box>
+      )}
     </Container>
   );
 };

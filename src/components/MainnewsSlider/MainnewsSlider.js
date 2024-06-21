@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Container, Grid } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import axios from "axios";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
+import {
+  Box,
+  Typography,
+  Container,
+  Grid,
+  CircularProgress,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import img1 from "../../images/markus-spiske-2G8mnFvH8xk-unsplash.jpg";
 import img2 from "../../images/markus-winkler-cxoR55-bels-unsplash.jpg";
 import img3 from "../../images/roman-kraft-_Zua2hyvTBk-unsplash.jpg";
@@ -28,6 +34,8 @@ const api_key = "0998ee5fea3545e8bfe655fddce913d5";
 const MainNewsSlider = () => {
   const [mainNews, setMainNews] = useState([]);
   const [sideNews, setSideNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const placeholderImages = [img1, img2, img3, img4];
 
   const fetchMainNews = async () => {
@@ -37,7 +45,10 @@ const MainNewsSlider = () => {
       );
       setMainNews(response.data.articles.slice(0, 3)); // Assuming you want to show 3 main news articles
       setSideNews(response.data.articles.slice(3, 7)); // Assuming you want to show 4 side news articles
+      setLoading(false); // Set loading to false once data is fetched
     } catch (error) {
+      setError("Error fetching news data.");
+      setLoading(false); // Set loading to false in case of error
       console.error("Error fetching news data:", error);
     }
   };
@@ -58,56 +69,34 @@ const MainNewsSlider = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={7}>
-          <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
-            {mainNews.map((news, index) => (
-              <Box
-                key={index}
-                sx={{
-                  position: "relative",
-                  height: "500px",
-                  mb: 2,
-                  cursor: "pointer",
-                  background: `url(${getBackgroundImage(
-                    news.urlToImage
-                  )}) center/cover no-repeat`,
-                }}
-                onClick={() => handleNewsClick(news.url)}
-              >
-                <Overlay>
-                  <Typography variant="body2" component="div" gutterBottom>
-                    <span
-                      style={{
-                        backgroundColor: "#3f51b5",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                      }}
-                    >
-                      {news.source.name}
-                    </span>
-                    <span style={{ marginLeft: "10px" }}>
-                      {new Date(news.publishedAt).toLocaleDateString()}
-                    </span>
-                  </Typography>
-                  <Typography variant="h5">{news.title}</Typography>
-                </Overlay>
-              </Box>
-            ))}
-          </Carousel>
-        </Grid>
-        <Grid item xs={12} md={5}>
-          <Grid container spacing={2}>
-            {sideNews.map((news, index) => (
-              <Grid item xs={12} md={6} key={index}>
+      {loading ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="500px"
+        >
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Typography variant="body1" color="error" align="center" sx={{ mt: 2 }}>
+          {error}
+        </Typography>
+      ) : (
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={7}>
+            <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
+              {mainNews.map((news, index) => (
                 <Box
+                  key={index}
                   sx={{
                     position: "relative",
-                    height: "250px",
+                    height: "500px",
+                    mb: 2,
+                    cursor: "pointer",
                     background: `url(${getBackgroundImage(
                       news.urlToImage
                     )}) center/cover no-repeat`,
-                    cursor: "pointer",
                   }}
                   onClick={() => handleNewsClick(news.url)}
                 >
@@ -126,14 +115,51 @@ const MainNewsSlider = () => {
                         {new Date(news.publishedAt).toLocaleDateString()}
                       </span>
                     </Typography>
-                    <Typography variant="subtitle1">{news.title}</Typography>
+                    <Typography variant="h5">{news.title}</Typography>
                   </Overlay>
                 </Box>
-              </Grid>
-            ))}
+              ))}
+            </Carousel>
+          </Grid>
+          <Grid item xs={12} md={5}>
+            <Grid container spacing={2}>
+              {sideNews.map((news, index) => (
+                <Grid item xs={12} md={6} key={index}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      height: "250px",
+                      background: `url(${getBackgroundImage(
+                        news.urlToImage
+                      )}) center/cover no-repeat`,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleNewsClick(news.url)}
+                  >
+                    <Overlay>
+                      <Typography variant="body2" component="div" gutterBottom>
+                        <span
+                          style={{
+                            backgroundColor: "#3f51b5",
+                            padding: "5px 10px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          {news.source.name}
+                        </span>
+                        <span style={{ marginLeft: "10px" }}>
+                          {new Date(news.publishedAt).toLocaleDateString()}
+                        </span>
+                      </Typography>
+                      <Typography variant="subtitle1">{news.title}</Typography>
+                    </Overlay>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
     </Container>
   );
 };
