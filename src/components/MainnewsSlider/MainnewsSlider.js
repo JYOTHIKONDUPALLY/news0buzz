@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import img1 from "../../images/markus-spiske-2G8mnFvH8xk-unsplash.jpg";
 import img2 from "../../images/markus-winkler-cxoR55-bels-unsplash.jpg";
 import img3 from "../../images/roman-kraft-_Zua2hyvTBk-unsplash.jpg";
@@ -38,13 +38,14 @@ const MainNewsSlider = () => {
   const [error, setError] = useState(null);
   const placeholderImages = [img1, img2, img3, img4];
 
+  // fetching top headlines
   const fetchMainNews = async () => {
     try {
       const response = await axios.get(
         `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api_key}`
       );
-      setMainNews(response.data.articles.slice(0, 3)); // Assuming you want to show 3 main news articles
-      setSideNews(response.data.articles.slice(3, 7)); // Assuming you want to show 4 side news articles
+      setMainNews(response.data.articles.slice(0, 6)); // Showing Top 6 headlines as Main news
+      setSideNews(response.data.articles.slice(6, 10)); // remaing in top 10 show as sidenews
       setLoading(false); // Set loading to false once data is fetched
     } catch (error) {
       setError("Error fetching news data.");
@@ -57,18 +58,21 @@ const MainNewsSlider = () => {
     fetchMainNews();
   }, []);
 
+  // function to pick random image from set of 4
   const getBackgroundImage = (url) => {
     if (url) return url;
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);
     return placeholderImages[randomIndex];
   };
 
+  // navigating to details page
   const handleNewsClick = (url) => {
     window.open(url, "_blank");
   };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* conditional rendering based on fetching top headlines */}
       {loading ? (
         <Box
           display="flex"
@@ -83,9 +87,11 @@ const MainNewsSlider = () => {
           {error}
         </Typography>
       ) : (
+        // created two parts on for main news and other for side news
         <Grid container spacing={2}>
+          {/* MainNews */}
           <Grid item xs={12} md={7}>
-            <Carousel showThumbs={false} autoPlay interval={5000} infiniteLoop>
+            <Carousel autoPlay interval={2000} infiniteLoop>
               {mainNews.map((news, index) => (
                 <Box
                   key={index}
@@ -121,6 +127,7 @@ const MainNewsSlider = () => {
               ))}
             </Carousel>
           </Grid>
+          {/* SideNews */}
           <Grid item xs={12} md={5}>
             <Grid container spacing={2}>
               {sideNews.map((news, index) => (
@@ -128,7 +135,7 @@ const MainNewsSlider = () => {
                   <Box
                     sx={{
                       position: "relative",
-                      height: "250px",
+                      height: "243px",
                       background: `url(${getBackgroundImage(
                         news.urlToImage
                       )}) center/cover no-repeat`,

@@ -167,7 +167,7 @@ const Footer = () => {
             <Grid container spacing={1}>
               {placeholderImages.map((img, index) => (
                 <Grid item xs={4} key={index}>
-                  <a href="#">
+                  <a href="home">
                     <Box
                       component="img"
                       src={img}
@@ -192,7 +192,7 @@ const Footer = () => {
       >
         <Typography variant="body2">
           &copy;{" "}
-          <a href="#" style={{ color: "#fff", textDecoration: "none" }}>
+          <a href="home" style={{ color: "#fff", textDecoration: "none" }}>
             NewsBuzz
           </a>
           . All Rights Reserved.

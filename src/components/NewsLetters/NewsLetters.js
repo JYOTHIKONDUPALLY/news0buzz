@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-  Container,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const NewsletterContainer = styled(Container)({
