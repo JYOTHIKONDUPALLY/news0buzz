@@ -1,21 +1,24 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import InputBase from "@mui/material/InputBase";
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+  InputBase,
+} from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
 import { useTheme, useMediaQuery } from "@mui/material";
+import ArticleIcon from "@mui/icons-material/Article";
 import {
   Home,
   Category,
-  ContactMail,
   AccountCircle,
   Menu as MenuIcon,
 } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,8 +59,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down("md"));
@@ -78,14 +83,37 @@ const Navbar = () => {
     setCategoryAnchorEl(null);
   };
 
+  const handleSearch = () => {
+    if (searchText.trim() === "") {
+      navigate(`/article/${encodeURIComponent("bitcoin")}`);
+    }
+
+    navigate(`/article/${encodeURIComponent(searchText)}`);
+  };
+
+  const handleInputChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
         <Typography
           variant="h6"
           noWrap
-          component="div"
-          sx={{ display: { xs: "none", sm: "block" } }}
+          component={Link}
+          to="/"
+          sx={{
+            display: { xs: "none", sm: "block" },
+            textDecoration: "none",
+            color: "inherit",
+          }}
         >
           BizNews
         </Typography>
@@ -97,33 +125,70 @@ const Navbar = () => {
             alignItems: "center",
           }}
         >
-          <MenuItem>
-            <Home />{" "}
-            {!isMdOrSmaller && (
-              <span style={{ display: "inline-block" }}>Home</span>
-            )}
+          <MenuItem component={Link} to="/">
+            <Home /> {!isMdOrSmaller && <span>Home</span>}
           </MenuItem>
           <MenuItem onClick={handleCategoryMenu}>
-            <Category />{" "}
-            {!isMdOrSmaller && (
-              <span style={{ display: "inline-block" }}>Category</span>
-            )}
+            <Category /> {!isMdOrSmaller && <span>Category</span>}
           </MenuItem>
           <Menu
             anchorEl={categoryAnchorEl}
             open={Boolean(categoryAnchorEl)}
             onClose={handleCategoryClose}
           >
-            <MenuItem onClick={handleCategoryClose}>Business</MenuItem>
-            <MenuItem onClick={handleCategoryClose}>Sports</MenuItem>
-            <MenuItem onClick={handleCategoryClose}>Politics</MenuItem>
-            <MenuItem onClick={handleCategoryClose}>Science</MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/business"
+              onClick={handleCategoryClose}
+            >
+              Business
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/sports"
+              onClick={handleCategoryClose}
+            >
+              Sports
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/politics"
+              onClick={handleCategoryClose}
+            >
+              Politics
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/science"
+              onClick={handleCategoryClose}
+            >
+              Science
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/entertainment"
+              onClick={handleCategoryClose}
+            >
+              Entertainment
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/category/health"
+              onClick={handleCategoryClose}
+            >
+              Health
+            </MenuItem>
           </Menu>
-          <MenuItem>
-            <ContactMail />{" "}
-            {!isMdOrSmaller && (
-              <span style={{ display: "inline-block" }}>Contact</span>
-            )}
+          <MenuItem
+            onClick={handleSearch}
+            sx={{
+              display: "flex",
+              gap: "5px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ArticleIcon /> {!isMdOrSmaller && <span>Articles</span>}
           </MenuItem>
         </div>
         <Search>
@@ -133,6 +198,9 @@ const Navbar = () => {
           <StyledInputBase
             placeholder="Keyword…"
             inputProps={{ "aria-label": "search" }}
+            value={searchText}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
         </Search>
         <div>
@@ -166,6 +234,17 @@ const Navbar = () => {
             <MenuItem onClick={handleClose}>My account</MenuItem>
           </Menu>
         </div>
+        {isMdOrSmaller && (
+          <IconButton
+            size="large"
+            edge="end"
+            color="inherit"
+            aria-label="menu"
+            onClick={handleCategoryMenu}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
       </Toolbar>
     </AppBar>
   );

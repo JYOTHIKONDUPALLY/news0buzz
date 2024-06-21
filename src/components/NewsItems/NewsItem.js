@@ -1,11 +1,15 @@
 import React from "react";
+import img1 from "../../images/markus-spiske-2G8mnFvH8xk-unsplash.jpg";
+import img2 from "../../images/markus-winkler-cxoR55-bels-unsplash.jpg";
+import img3 from "../../images/roman-kraft-_Zua2hyvTBk-unsplash.jpg";
+import img4 from "../../images/obi-pixel8propix-UEQvUtRs224-unsplash.jpg";
 import {
   Card as MuiCard,
   CardMedia as MuiCardMedia,
   CardContent as MuiCardContent,
   CardActions as MuiCardActions,
   Typography,
-  Badge,
+  Badge as MuiBadge,
   Avatar,
   Box,
 } from "@mui/material";
@@ -52,6 +56,18 @@ const BadgeBox = styled(Box)({
   marginBottom: 8,
 });
 
+const Badge = styled(MuiBadge)(({ theme }) => ({
+  padding: "0 8px",
+  fontSize: "0.75rem",
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.common.white,
+  borderRadius: "4px",
+  display: "inline-block",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+}));
+
 const AuthorBox = styled(Box)({
   display: "flex",
   alignItems: "center",
@@ -86,12 +102,20 @@ const NewsItem = ({
     window.open(url, "_blank");
   };
 
+  const placeholderImages = [img1, img2, img3, img4];
+
+  const getImage = (url) => {
+    if (url) return url;
+    const randomIndex = Math.floor(Math.random() * placeholderImages.length);
+    return placeholderImages[randomIndex];
+  };
+
   return (
-    <Card>
-      <CardMedia component="img" image={image} alt="news image" />
+    <Card onClick={() => handleNewsClick(url)}>
+      <CardMedia component="img" image={getImage(image)} alt="news image" />
       <CardContent>
         <BadgeBox>
-          <Badge color="primary" badgeContent={category.toUpperCase()} />
+          <Badge>{category.toUpperCase()}</Badge>
           <Typography variant="body2" color="textSecondary">
             {date}
           </Typography>

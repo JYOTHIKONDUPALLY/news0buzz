@@ -1,40 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import NewsWithSidebar from "../../components/NewsItems/NewsWithSideBar";
 import { Box, Typography, CircularProgress } from "@mui/material";
 
-const api_key = "0998ee5fea3545e8bfe655fddce913d5";
-
-const CategoryPage = () => {
-  const { category } = useParams();
+const ArticlePage = () => {
+  const { article } = useParams();
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const apiKey = "0998ee5fea3545e8bfe655fddce913d5";
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchArticle = async () => {
       setLoading(true);
       setError(null);
       try {
         const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${api_key}`
+          `https://newsapi.org/v2/everything?q=${article}&apiKey=${apiKey}`
         );
         setNewsData(response.data.articles);
-      } catch (error) {
+      } catch (err) {
         setError("Error fetching news data.");
-        console.error("Error fetching news data:", error);
+        console.error("Error fetching news data:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNews();
-  }, [category]);
+    fetchArticle();
+  }, [article]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [category]);
+  }, [article]);
 
   return (
     <div>
@@ -46,13 +45,12 @@ const CategoryPage = () => {
             border: "1px solid #ccc",
             textTransform: "uppercase",
             fontWeight: "bold",
-            padding: "5px",
-            borderLeft: "10px solid blue",
+            padding: "20px",
+            borderLeft: "100px solid blue",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
-            margin: "50px 50px 10px 50px",
           }}
         >
-          {category}
+          {article}
         </Typography>
       </Box>
       {loading ? (
@@ -60,24 +58,9 @@ const CategoryPage = () => {
           <CircularProgress />
         </Box>
       ) : error ? (
-        <Box display="flex" justifyContent="center" m={3}>
-          <Typography color="error">{error}</Typography>
-        </Box>
+        <p>{error}</p>
       ) : newsData.length === 0 ? (
-        <Box display="flex" justifyContent="center" m={3} p={3}>
-          <Typography
-            variant="body1"
-            color="warning"
-            sx={{
-              fontWeight: "bold",
-              padding: "30px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.5)",
-            }}
-          >
-            We are working on that, right now no such category is available. Try
-            something Else!!
-          </Typography>
-        </Box>
+        <p>No articles found for "{decodeURIComponent(article)}"</p>
       ) : (
         <NewsWithSidebar newsData={newsData} />
       )}
@@ -85,4 +68,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default ArticlePage;

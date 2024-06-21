@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Container, Grid, Typography, Box, Link } from "@mui/material";
-import axios from "axios";
+import React, { useState } from "react";
+import { Container, Grid, Typography, Box, Pagination } from "@mui/material";
 import NewsItem from "./NewsItem";
 import SocialFollow from "../SocialMediaFollowers/SocialMediaFollowers";
-const api_key = "0998ee5fea3545e8bfe655fddce913d5";
-const apiUrl = `https://newsapi.org/v2/everything?q=bitcoin&apiKey=${api_key}`;
+import Newsletter from "../NewsLetters/NewsLetters";
 
-const NewsWithSidebar = () => {
-  const [newsData, setNewsData] = useState([]);
+const NewsWithSidebar = ({ newsData }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get(apiUrl);
-        setNewsData(response.data.articles.slice(0, 4));
-      } catch (error) {
-        console.error("Error fetching news data:", error);
-      }
-    };
+  // Calculate pagination
+  const lastIndex = currentPage * itemsPerPage;
+  const firstIndex = lastIndex - itemsPerPage;
+  const currentNewsData = newsData.slice(firstIndex, lastIndex);
 
-    fetchNews();
-  }, []);
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -36,11 +31,11 @@ const NewsWithSidebar = () => {
                 borderBottom: "5px solid blue",
               }}
             >
-              Latest Article
+              News Articles
             </Typography>
           </Box>
           <Grid container spacing={3}>
-            {newsData.map((news, index) => (
+            {currentNewsData.map((news, index) => (
               <Grid
                 item
                 xs={12}
@@ -65,9 +60,22 @@ const NewsWithSidebar = () => {
               </Grid>
             ))}
           </Grid>
+          {newsData.length > itemsPerPage && (
+            <Box m={3} display="flex" justifyContent="center">
+              <Pagination
+                count={Math.ceil(newsData.length / itemsPerPage)}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+              />
+            </Box>
+          )}
         </Grid>
         <Grid item xs={12} md={4}>
           <SocialFollow />
+          <Newsletter />
         </Grid>
       </Grid>
     </Container>

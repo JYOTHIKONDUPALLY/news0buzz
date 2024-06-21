@@ -14,8 +14,24 @@ import {
   Instagram,
   YouTube,
 } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import img1 from "../../images/markus-spiske-2G8mnFvH8xk-unsplash.jpg";
+import img2 from "../../images/markus-winkler-cxoR55-bels-unsplash.jpg";
+import img3 from "../../images/roman-kraft-_Zua2hyvTBk-unsplash.jpg";
+import img4 from "../../images/obi-pixel8propix-UEQvUtRs224-unsplash.jpg";
+import img5 from "../../images/1715738771-5395.avif";
+import img6 from "../../images/Buy_or_sell_stocks_to_buy_today_stock_market_today_1698023021624_1718849992842.avif";
+import img7 from "../../images/FILES-SPAIN-TELECOM-ECONOMY-EMPLOYMENT-0_1718362233212_1718817961843.avif";
+import img8 from "../../images/swdewd.avif";
 
 const Footer = () => {
+  const placeholderImages = [img1, img2, img3, img4, img5, img6, img7, img8];
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category) => {
+    navigate(`/category/${category}`);
+  };
+
   return (
     <Box
       sx={{
@@ -42,21 +58,21 @@ const Footer = () => {
                 className="fa fa-map-marker-alt"
                 style={{ marginRight: "8px" }}
               ></i>
-              123 Street, New York, USA
+              123 Street, Delhi, India
             </Typography>
             <Typography
               variant="body2"
               sx={{ display: "flex", alignItems: "center", mb: 2 }}
             >
               <i className="fa fa-phone-alt" style={{ marginRight: "8px" }}></i>
-              +012 345 67890
+              +91 7866543290
             </Typography>
             <Typography
               variant="body2"
               sx={{ display: "flex", alignItems: "center", mb: 4 }}
             >
               <i className="fa fa-envelope" style={{ marginRight: "8px" }}></i>
-              info@example.com
+              newsbuzz@google.com
             </Typography>
             <Typography
               variant="h6"
@@ -100,7 +116,7 @@ const Footer = () => {
                   >
                     Business
                   </Button>
-                  <Typography variant="body2">Jan 01, 2045</Typography>
+                  <Typography variant="body2">June 01, 2024</Typography>
                 </Box>
                 <Typography variant="body2">
                   Lorem ipsum dolor sit amet elit. Proin vitae porta diam...
@@ -134,6 +150,7 @@ const Footer = () => {
                   color="secondary"
                   size="small"
                   sx={{ m: 1 }}
+                  onClick={() => handleCategoryClick(category)}
                 >
                   {category}
                 </Button>
@@ -148,14 +165,14 @@ const Footer = () => {
               Flickr Photos
             </Typography>
             <Grid container spacing={1}>
-              {[...Array(6)].map((_, index) => (
+              {placeholderImages.map((img, index) => (
                 <Grid item xs={4} key={index}>
                   <a href="#">
                     <Box
                       component="img"
-                      src={`img/news-110x110-${(index % 5) + 1}.jpg`}
-                      alt=""
-                      sx={{ width: "100%" }}
+                      src={img}
+                      alt="image"
+                      sx={{ width: "50px", height: "50px" }}
                     />
                   </a>
                 </Grid>
@@ -176,15 +193,9 @@ const Footer = () => {
         <Typography variant="body2">
           &copy;{" "}
           <a href="#" style={{ color: "#fff", textDecoration: "none" }}>
-            Your Site Name
+            NewsBuzz
           </a>
-          . All Rights Reserved. Design by{" "}
-          <a
-            href="https://htmlcodex.com"
-            style={{ color: "#fff", textDecoration: "none" }}
-          >
-            HTML Codex
-          </a>
+          . All Rights Reserved.
         </Typography>
       </Box>
     </Box>
