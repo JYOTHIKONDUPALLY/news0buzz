@@ -46,7 +46,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -58,14 +57,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = React.useState(null);
+
   const theme = useTheme();
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down("md"));
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCategoryMenu = (event) => {
+    setCategoryAnchorEl(event.currentTarget);
+  };
+
+  const handleCategoryClose = () => {
+    setCategoryAnchorEl(null);
   };
 
   return (
@@ -93,12 +103,22 @@ const Navbar = () => {
               <span style={{ display: "inline-block" }}>Home</span>
             )}
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={handleCategoryMenu}>
             <Category />{" "}
             {!isMdOrSmaller && (
               <span style={{ display: "inline-block" }}>Category</span>
             )}
           </MenuItem>
+          <Menu
+            anchorEl={categoryAnchorEl}
+            open={Boolean(categoryAnchorEl)}
+            onClose={handleCategoryClose}
+          >
+            <MenuItem onClick={handleCategoryClose}>Business</MenuItem>
+            <MenuItem onClick={handleCategoryClose}>Sports</MenuItem>
+            <MenuItem onClick={handleCategoryClose}>Politics</MenuItem>
+            <MenuItem onClick={handleCategoryClose}>Science</MenuItem>
+          </Menu>
           <MenuItem>
             <ContactMail />{" "}
             {!isMdOrSmaller && (

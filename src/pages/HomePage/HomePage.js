@@ -1,9 +1,9 @@
 import React from "react";
+import styles from "./Homepage.module.css";
 import Topbar from "../../components/Header/Header";
 import Navbar from "../../components/navbar/navbar";
 import MainNewsSlider from "../../components/MainnewsSlider/MainnewsSlider";
 import FeaturedNewsSlider from "../../components/FeaturesNewsSlider/FeaturesNewsSlider";
-import SocialFollow from "../../components/SocialMediaFollowers/SocialMediaFollowers";
 import NewsWithSidebar from "../../components/NewsItems/NewsWithSideBar";
 import Footer from "../../components/Footer/Footer";
 import BreakingNews from "../../components/Breakingnews/BreakingNews";
@@ -16,7 +16,7 @@ const HomePage = () => {
       {/* <BreakingNews /> */}
       <FeaturedNewsSlider />
       <NewsWithSidebar />
-      <SocialFollow />
+
       <Footer />
     </div>
   );

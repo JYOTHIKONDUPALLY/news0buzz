@@ -1,0 +1,10 @@
+/* .articles {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+@media screen and (max-width: "600px") {
+  .articles {
+    display: block;
+  }
+} */
