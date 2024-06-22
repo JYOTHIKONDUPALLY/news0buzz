@@ -48,8 +48,8 @@ const HomePage = () => {
         <>
           {" "}
           <MainNewsSlider />
-          <FeaturedNewsSlider />
-          <NewsWithSidebar newsData={newsArticle} />
+          {/* <FeaturedNewsSlider />
+          <NewsWithSidebar newsData={newsArticle} /> */}
         </>
       )}
     </div>
