@@ -115,7 +115,7 @@ const Navbar = () => {
             color: "inherit",
           }}
         >
-          BizNews
+          NewsBuzz
         </Typography>
         <div
           style={{
