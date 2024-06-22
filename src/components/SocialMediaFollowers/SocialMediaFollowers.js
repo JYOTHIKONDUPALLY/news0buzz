@@ -54,7 +54,7 @@ const SocialFollow = () => {
             borderBottom: "5px solid blue",
           }}
         >
-          Latest Article
+          SocialFollowers
         </Typography>
       </Box>
       {/* icons */}
