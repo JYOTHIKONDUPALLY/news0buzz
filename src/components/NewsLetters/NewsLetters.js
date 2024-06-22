@@ -34,8 +34,6 @@ const Newsletter = () => {
       setIsValidEmail(true);
       setIsSignedUp(true);
       console.log("Signing up...");
-      // Perform signup logic here
-      // You can make an API call or perform any action as needed
 
       // Automatically reset isSignedUp after 3 seconds
       setTimeout(() => {

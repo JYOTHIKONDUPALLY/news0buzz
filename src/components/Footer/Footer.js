@@ -28,6 +28,7 @@ const Footer = () => {
   const placeholderImages = [img1, img2, img3, img4, img5, img6, img7, img8];
   const navigate = useNavigate();
 
+  // onClick of any of the category navigate to that categorypage
   const handleCategoryClick = (category) => {
     navigate(`/category/${category}`);
   };
@@ -43,6 +44,7 @@ const Footer = () => {
     >
       <Container>
         <Grid container spacing={4} sx={{ py: 4 }}>
+          {/* address */}
           <Grid item lg={3} md={6} mb={5}>
             <Typography
               variant="h5"
@@ -98,6 +100,7 @@ const Footer = () => {
               </IconButton>
             </Box>
           </Grid>
+          {/* popular news */}
           <Grid item lg={3} md={6} mb={5}>
             <Typography
               variant="h5"
@@ -124,6 +127,7 @@ const Footer = () => {
               </Box>
             ))}
           </Grid>
+          {/* categories tabs */}
           <Grid item lg={3} md={6} mb={5}>
             <Typography
               variant="h5"
@@ -157,6 +161,7 @@ const Footer = () => {
               ))}
             </Box>
           </Grid>
+          {/* random images of news */}
           <Grid item lg={3} md={6} mb={5}>
             <Typography
               variant="h5"
@@ -181,6 +186,7 @@ const Footer = () => {
           </Grid>
         </Grid>
       </Container>
+      {/* copyrights */}
       <Box
         sx={{
           backgroundColor: "#111111",

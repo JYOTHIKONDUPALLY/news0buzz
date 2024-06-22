@@ -27,6 +27,7 @@ const Overlay = styled("div")({
 
 const api_key = "0998ee5fea3545e8bfe655fddce913d5";
 
+// setting up the items to show in carousel based on screen size
 const responsive = {
   superLargeDesktop: {
     breakpoint: { max: 4000, min: 3000 },
@@ -46,6 +47,7 @@ const responsive = {
   },
 };
 
+// customizating the arrow:left
 const CustomLeftArrow = ({ onClick }) => (
   <button
     onClick={onClick}
@@ -55,15 +57,16 @@ const CustomLeftArrow = ({ onClick }) => (
       cursor: "pointer",
       position: "absolute",
       top: "50%",
-      left: 20, // Adjust this value to position the left arrow
+      left: 20,
       transform: "translateY(-50%)",
-      zIndex: 999, // Ensure arrows are above other elements
+      zIndex: 999,
     }}
   >
     <img src={leftarrow} alt="left arrow" />
   </button>
 );
 
+// customizating the arrow:right
 const CustomRightArrow = ({ onClick }) => (
   <button
     onClick={onClick}
@@ -73,9 +76,9 @@ const CustomRightArrow = ({ onClick }) => (
       cursor: "pointer",
       position: "absolute",
       top: "50%",
-      right: 20, // Adjust this value to position the right arrow
+      right: 20,
       transform: "translateY(-50%)",
-      zIndex: 999, // Ensure arrows are above other elements
+      zIndex: 999,
     }}
   >
     <img src={rightarrow} alt="right arrow" />
@@ -107,6 +110,7 @@ const FeaturedNewsSlider = () => {
     fetchFeaturedNews();
   }, []);
 
+  //setting randome images if the image from the data is null
   const getBackgroundImage = (url) => {
     if (url) return `url(${url})`;
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);

@@ -11,12 +11,7 @@ import {
 import { alpha, styled } from "@mui/material/styles";
 import { useTheme, useMediaQuery } from "@mui/material";
 import ArticleIcon from "@mui/icons-material/Article";
-import {
-  Home,
-  Category,
-  AccountCircle,
-  Menu as MenuIcon,
-} from "@mui/icons-material";
+import { Home, Category, AccountCircle } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -65,6 +60,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const theme = useTheme();
+  // setting the screen size for responsiveness
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleMenu = (event) => {
@@ -82,7 +78,7 @@ const Navbar = () => {
   const handleCategoryClose = () => {
     setCategoryAnchorEl(null);
   };
-
+  //if the searchText is empty set value as bitcoin(assuming as default), else the search text
   const handleSearch = () => {
     if (searchText.trim() === "") {
       navigate(`/article/${encodeURIComponent("bitcoin")}`);
@@ -104,6 +100,7 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
+        {/* logo */}
         <Typography
           variant="h6"
           noWrap
@@ -117,6 +114,7 @@ const Navbar = () => {
         >
           NewsBuzz
         </Typography>
+        {/* menuItems */}
         <div
           style={{
             flexGrow: 1,
@@ -191,6 +189,7 @@ const Navbar = () => {
             <ArticleIcon /> {!isMdOrSmaller && <span>Articles</span>}
           </MenuItem>
         </div>
+        {/* search bar */}
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
@@ -234,17 +233,6 @@ const Navbar = () => {
             <MenuItem onClick={handleClose}>My account</MenuItem>
           </Menu>
         </div>
-        {isMdOrSmaller && (
-          <IconButton
-            size="large"
-            edge="end"
-            color="inherit"
-            aria-label="menu"
-            onClick={handleCategoryMenu}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
       </Toolbar>
     </AppBar>
   );

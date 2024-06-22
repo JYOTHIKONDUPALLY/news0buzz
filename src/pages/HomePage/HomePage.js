@@ -12,6 +12,7 @@ const HomePage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    //fetching article data
     const fetchNewsArticle = async () => {
       try {
         const response = await axios.get(
@@ -30,26 +31,35 @@ const HomePage = () => {
 
   return (
     <div>
-      {/* <BreakingNews /> */}
-
+      {/* loading */}
       {loading && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
           <CircularProgress />
         </Box>
       )}
+      {/* error */}
       {error && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            m: 4,
+            p: 2,
+            textAlign: "center",
+          }}
+        >
           <Typography variant="h6" color="error">
             {error}
           </Typography>
         </Box>
       )}
+      {/* news */}
       {!loading && !error && newsArticle.length > 0 && (
         <>
           {" "}
           <MainNewsSlider />
-          {/* <FeaturedNewsSlider />
-          <NewsWithSidebar newsData={newsArticle} /> */}
+          <FeaturedNewsSlider />
+          <NewsWithSidebar newsData={newsArticle} />
         </>
       )}
     </div>

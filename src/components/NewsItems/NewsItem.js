@@ -98,12 +98,15 @@ const NewsItem = ({
   authorName,
   url,
 }) => {
+  // open the detail page in tab
   const handleNewsClick = (url) => {
     window.open(url, "_blank");
   };
 
+  //array of images
   const placeholderImages = [img1, img2, img3, img4];
 
+  //pick random images if image is null
   const getImage = (url) => {
     if (url) return url;
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);

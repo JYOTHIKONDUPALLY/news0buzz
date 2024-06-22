@@ -17,10 +17,11 @@ import {
 
 const TopBar = () => {
   const theme = useTheme();
+  // setting the screen size for responsiveness
   const isMdOrSmaller = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* Top Bar */}
       <AppBar position="static" sx={{ background: "black" }}>
         <Container maxWidth="lg">
           <Toolbar disableGutters>

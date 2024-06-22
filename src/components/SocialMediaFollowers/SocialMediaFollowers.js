@@ -43,6 +43,7 @@ const IconBox = styled(Box)({
 const SocialFollow = () => {
   return (
     <Container>
+      {/* heading */}
       <Box mt={3} mb={3}>
         <Typography
           variant="h4"
@@ -56,6 +57,7 @@ const SocialFollow = () => {
           Latest Article
         </Typography>
       </Box>
+      {/* icons */}
       <SocialBox>
         <SocialLink href="#" background="#39569E">
           <IconBox>

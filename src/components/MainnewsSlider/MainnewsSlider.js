@@ -30,7 +30,6 @@ const Overlay = styled("div")({
 });
 
 const api_key = "0998ee5fea3545e8bfe655fddce913d5";
-const new_api_token = "U62emp2EuXm6DBnJJOrnVgaB354XEyko9R41I25l";
 
 const MainNewsSlider = () => {
   const [mainNews, setMainNews] = useState([]);
@@ -39,52 +38,41 @@ const MainNewsSlider = () => {
   const [error, setError] = useState(null);
   const placeholderImages = [img1, img2, img3, img4];
 
+  // fetching top headlines
   const fetchMainNews = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.thenewsapi.com/v1/news/top?api_token=${new_api_token}&locale=us&limit=3`
-      );
-      setMainNews(response.data.data); // Adjust according to the actual response structure
-    } catch (error) {
-      setError("Error fetching main news data.");
-      console.error("Error fetching main news data:", error);
-    }
-  };
-
-  const fetchSideNews = async () => {
     try {
       const response = await axios.get(
         `https://newsapi.org/v2/top-headlines?country=us&apiKey=${api_key}`
       );
-      setSideNews(response.data.articles.slice(0, 4)); // Showing 4 headlines as side news
+      setMainNews(response.data.articles.slice(0, 6)); // Showing Top 6 headlines as Main news
+      setSideNews(response.data.articles.slice(6, 10)); // remaing in top 10 show as sidenews
+      setLoading(false); // Set loading to false once data is fetched
     } catch (error) {
-      setError("Error fetching side news data.");
-      console.error("Error fetching side news data:", error);
+      setError("Error fetching news data.");
+      setLoading(false); // Set loading to false in case of error
+      console.error("Error fetching news data:", error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await fetchMainNews();
-      await fetchSideNews();
-      setLoading(false);
-    };
-    fetchData();
+    fetchMainNews();
   }, []);
 
+  // function to pick random image from set of 4
   const getBackgroundImage = (url) => {
     if (url) return url;
     const randomIndex = Math.floor(Math.random() * placeholderImages.length);
     return placeholderImages[randomIndex];
   };
 
+  // navigating to details page
   const handleNewsClick = (url) => {
     window.open(url, "_blank");
   };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
+      {/* conditional rendering based on fetching top headlines */}
       {loading ? (
         <Box
           display="flex"
@@ -99,7 +87,9 @@ const MainNewsSlider = () => {
           {error}
         </Typography>
       ) : (
+        // created two parts on for main news and other for side news
         <Grid container spacing={2}>
+          {/* MainNews */}
           <Grid item xs={12} md={7}>
             <Carousel autoPlay interval={2000} infiniteLoop>
               {mainNews.map((news, index) => (
@@ -111,7 +101,7 @@ const MainNewsSlider = () => {
                     mb: 2,
                     cursor: "pointer",
                     background: `url(${getBackgroundImage(
-                      news.image_url
+                      news.urlToImage
                     )}) center/cover no-repeat`,
                   }}
                   onClick={() => handleNewsClick(news.url)}
@@ -125,10 +115,10 @@ const MainNewsSlider = () => {
                           borderRadius: "5px",
                         }}
                       >
-                        {news.source}
+                        {news.source.name}
                       </span>
                       <span style={{ marginLeft: "10px" }}>
-                        {new Date(news.published_at).toLocaleDateString()}
+                        {new Date(news.publishedAt).toLocaleDateString()}
                       </span>
                     </Typography>
                     <Typography variant="h5">{news.title}</Typography>
@@ -137,6 +127,7 @@ const MainNewsSlider = () => {
               ))}
             </Carousel>
           </Grid>
+          {/* SideNews */}
           <Grid item xs={12} md={5}>
             <Grid container spacing={2}>
               {sideNews.map((news, index) => (
